@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$-alpha</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/jmenziessmith/TagCache.Redis/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/jmenziessmith/TagCache.Redis</projectUrl> 
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Alpha release</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>protobuf</tags>
+  </metadata>
+</package>
