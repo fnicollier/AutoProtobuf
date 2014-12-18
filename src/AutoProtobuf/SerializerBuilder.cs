@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -48,15 +49,14 @@ namespace AutoProtobuf
             }
 
             var meta = RuntimeTypeModel.Default.Add(type, false);
-            var properties = type.GetProperties(flags).Where(p => p.GetSetMethod() != null).ToList();
             var fields = type.GetFields(flags).ToList();
-            
-            meta.Add((properties.Select(p => p.Name).Distinct().Concat(fields.Select(m => m.Name).Distinct()).ToArray()));
+
+            meta.Add(fields.Select(m => m.Name).ToArray());
             meta.UseConstructor = false;
-
+            
             BuildGenerics(type);
-
-            foreach (var memberType in (properties.Select(p => p.PropertyType).Concat(fields.Select(f => f.FieldType)).Where(t => !t.IsPrimitive)))
+            
+            foreach (var memberType in fields.Select(f => f.FieldType).Where(t => !t.IsPrimitive))
             {
                 Build(memberType);
             }
@@ -64,9 +64,9 @@ namespace AutoProtobuf
         
         private static void BuildGenerics(Type type)
         {
-            if (type.IsGenericType)
+            if (type.IsGenericType || (type.BaseType != null && type.BaseType.IsGenericType))
             {
-                var generics = type.GetGenericArguments();
+                var generics = type.IsGenericType ? type.GetGenericArguments() : type.BaseType.GetGenericArguments();
 
                 foreach (var generic in generics)
                 {
