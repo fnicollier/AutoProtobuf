@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -36,31 +37,35 @@ namespace AutoProtobuf
         public static void Build(Type type)
         {
             const BindingFlags flags = BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-            
-            if (RuntimeTypeModel.Default.CanSerialize(type))
-            {
-                return;
-            }
 
-            if (type == typeof(DataTable))
+            lock (type)
             {
-                return;
-            }
+                if (RuntimeTypeModel.Default.CanSerialize(type))
+                {
+                    //Dictionaries report they can serialize when their generic parameters aren't serializable yet
+                    if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+                    {
+                        BuildGenerics(type);
+                    }
 
-            var meta = RuntimeTypeModel.Default.Add(type, false);
-            var fields = type.GetFields(flags).ToList();
+                    return;
+                }
 
-            meta.Add(fields.Select(m => m.Name).ToArray());
-            meta.UseConstructor = false;
-            
-            BuildGenerics(type);
-            
-            foreach (var memberType in fields.Select(f => f.FieldType).Where(t => !t.IsPrimitive))
-            {
-                Build(memberType);
+                var meta = RuntimeTypeModel.Default.Add(type, false);
+                var fields = type.GetFields(flags).ToList();
+
+                meta.Add(fields.Select(m => m.Name).ToArray());
+                meta.UseConstructor = false;
+
+                BuildGenerics(type);
+
+                foreach (var memberType in fields.Select(f => f.FieldType).Where(t => !t.IsPrimitive))
+                {
+                    Build(memberType);
+                }
             }
         }
-        
+
         private static void BuildGenerics(Type type)
         {
             if (type.IsGenericType || (type.BaseType != null && type.BaseType.IsGenericType))
