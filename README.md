@@ -15,4 +15,6 @@ SerializerBuilder.Build(complexClass);
 ##Known limitations
 Doesn't works with DataTables, please use [protobuf-net-data](http://www.nuget.org/packages/protobuf-net-data) for serializing.
 
+Inherited fields are ignored.
+
 This is also a very early release so use with caution.
