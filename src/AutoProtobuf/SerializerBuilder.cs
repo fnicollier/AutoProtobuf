@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using ProtoBuf;
 using ProtoBuf.Meta;
 
 namespace AutoProtobuf
@@ -42,12 +43,11 @@ namespace AutoProtobuf
             {
                 if (RuntimeTypeModel.Default.CanSerialize(type))
                 {
-                    //Dictionaries report they can serialize when their generic parameters aren't serializable yet
-                    if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+                    if (type.IsGenericType)
                     {
                         BuildGenerics(type);
                     }
-
+                    
                     return;
                 }
 
