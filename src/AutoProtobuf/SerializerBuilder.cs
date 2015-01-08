@@ -10,6 +10,9 @@ namespace AutoProtobuf
 {
     public static class SerializerBuilder
     {
+        const BindingFlags flags = BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+        static readonly Dictionary<Type, List<Type>> subTypes = new Dictionary<Type, List<Type>>();
+
         /// <summary>
         /// Build the ProtoBuf serializer from the generic <see cref="Type">type</see>.
         /// </summary>
@@ -37,8 +40,6 @@ namespace AutoProtobuf
         /// <param name="type">The type of build the serializer for.</param>
         public static void Build(Type type)
         {
-            const BindingFlags flags = BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-
             lock (type)
             {
                 if (RuntimeTypeModel.Default.CanSerialize(type))
@@ -47,15 +48,17 @@ namespace AutoProtobuf
                     {
                         BuildGenerics(type);
                     }
-                    
+
                     return;
                 }
 
                 var meta = RuntimeTypeModel.Default.Add(type, false);
-                var fields = type.GetFields(flags).ToList();
+                var fields = GetMembers(type);
 
                 meta.Add(fields.Select(m => m.Name).ToArray());
                 meta.UseConstructor = false;
+
+                BuildBaseClasses(type, meta, fields.Count);
 
                 BuildGenerics(type);
 
@@ -63,6 +66,38 @@ namespace AutoProtobuf
                 {
                     Build(memberType);
                 }
+            }
+        }
+
+        private static List<FieldInfo> GetMembers(Type type)
+        {
+            return type.GetFields(flags).ToList();
+        }
+
+        private static void BuildBaseClasses(Type type, MetaType meta, int fieldCount)
+        {
+            var baseType = type.BaseType;
+            var inheritingType = type;
+
+            while (baseType != null && baseType != typeof(object))
+            {
+                List<Type> baseTypeEntry;
+
+                if (!subTypes.TryGetValue(baseType, out baseTypeEntry))
+                {
+                    baseTypeEntry = new List<Type>();
+                    subTypes.Add(baseType, baseTypeEntry);
+                }
+
+                if (!baseTypeEntry.Contains(inheritingType))
+                {
+                    Build(baseType);
+                    RuntimeTypeModel.Default[baseType].AddSubType(baseTypeEntry.Count + 500, inheritingType);
+                    baseTypeEntry.Add(inheritingType);
+                }
+
+                inheritingType = baseType;
+                baseType = baseType.BaseType;
             }
         }
 
