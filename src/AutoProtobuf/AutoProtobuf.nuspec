@@ -6,8 +6,8 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://github.com/jmenziessmith/TagCache.Redis/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/jmenziessmith/TagCache.Redis</projectUrl> 
+    <licenseUrl>https://github.com/fnicollier/AutoProtobuf/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/fnicollier/AutoProtobuf</projectUrl> 
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Alpha release</releaseNotes>
