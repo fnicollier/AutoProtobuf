@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Reflection;
-using ProtoBuf;
 using ProtoBuf.Meta;
 
 namespace AutoProtobuf
 {
     public static class SerializerBuilder
     {
-        const BindingFlags flags = BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-        static readonly Dictionary<Type, List<Type>> subTypes = new Dictionary<Type, List<Type>>();
+        private const BindingFlags Flags = BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+        private static readonly Dictionary<Type, HashSet<Type>> SubTypes = new Dictionary<Type, HashSet<Type>>();
+        private static readonly Type ObjectType = typeof(object);
 
         /// <summary>
         /// Build the ProtoBuf serializer from the generic <see cref="Type">type</see>.
@@ -53,13 +52,12 @@ namespace AutoProtobuf
                 }
 
                 var meta = RuntimeTypeModel.Default.Add(type, false);
-                var fields = GetMembers(type);
+                var fields = GetFields(type);
 
                 meta.Add(fields.Select(m => m.Name).ToArray());
                 meta.UseConstructor = false;
 
-                BuildBaseClasses(type, meta, fields.Count);
-
+                BuildBaseClasses(type);
                 BuildGenerics(type);
 
                 foreach (var memberType in fields.Select(f => f.FieldType).Where(t => !t.IsPrimitive))
@@ -69,24 +67,34 @@ namespace AutoProtobuf
             }
         }
 
-        private static List<FieldInfo> GetMembers(Type type)
+        /// <summary>
+        /// Gets the fields for a type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        private static FieldInfo[] GetFields(Type type)
         {
-            return type.GetFields(flags).ToList();
+            return type.GetFields(Flags);
         }
 
-        private static void BuildBaseClasses(Type type, MetaType meta, int fieldCount)
+        /// <summary>
+        /// Builds the base class serializers for a type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        private static void BuildBaseClasses(Type type)
         {
             var baseType = type.BaseType;
             var inheritingType = type;
+            
 
-            while (baseType != null && baseType != typeof(object))
+            while (baseType != null && baseType != ObjectType)
             {
-                List<Type> baseTypeEntry;
+                HashSet<Type> baseTypeEntry;
 
-                if (!subTypes.TryGetValue(baseType, out baseTypeEntry))
+                if (!SubTypes.TryGetValue(baseType, out baseTypeEntry))
                 {
-                    baseTypeEntry = new List<Type>();
-                    subTypes.Add(baseType, baseTypeEntry);
+                    baseTypeEntry = new HashSet<Type>();
+                    SubTypes.Add(baseType, baseTypeEntry);
                 }
 
                 if (!baseTypeEntry.Contains(inheritingType))
@@ -101,6 +109,10 @@ namespace AutoProtobuf
             }
         }
 
+        /// <summary>
+        /// Builds the serializers for the generic parameters for a given type.
+        /// </summary>
+        /// <param name="type">The type.</param>
         private static void BuildGenerics(Type type)
         {
             if (type.IsGenericType || (type.BaseType != null && type.BaseType.IsGenericType))
