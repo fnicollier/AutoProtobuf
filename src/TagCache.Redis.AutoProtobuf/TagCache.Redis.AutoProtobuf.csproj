@@ -7,8 +7,8 @@
     <ProjectGuid>{8A931D33-73E7-4338-A7C1-F48168F5D526}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TagCache.Redis.AutoProtobufAdapter</RootNamespace>
-    <AssemblyName>TagCache.Redis.AutoProtobufAdapter</AssemblyName>
+    <RootNamespace>TagCache.Redis.AutoProtobuf</RootNamespace>
+    <AssemblyName>TagCache.Redis.AutoProtobuf</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -55,12 +55,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapter.cs" />
+    <Compile Include="SerializerBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TagCache.Redis.AutoProtobufAdapter.nuspec" />
     <None Include="packages.config" />
+    <None Include="TagCache.Redis.AutoProtobuf.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\TagCache.Redis\src\TagCache.Redis.ProtoBuf\TagCache.Redis.ProtoBuf.csproj">
