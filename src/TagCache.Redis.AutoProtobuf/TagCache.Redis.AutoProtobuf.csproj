@@ -34,7 +34,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Symbiotics\Mercurial\symbiotics\src\packages\AutoProtobuf.0.1.1.0-alpha\lib\net45\AutoProtobuf.dll</HintPath>
     </Reference>
-    <Reference Include="protobuf-net">
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Symbiotics\Mercurial\symbiotics\src\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="protobuf-net-data">
@@ -50,8 +51,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TagCache.Redis">
-      <HintPath>..\..\..\..\Symbiotics\Mercurial\symbiotics\src\packages\TagCache.Redis.0.0.0.20\lib\net45\TagCache.Redis.dll</HintPath>
+    <Reference Include="TagCache.Redis, Version=0.0.0.23, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FN.TagCache.Redis.0.0.0.23\lib\net45\TagCache.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="TagCache.Redis.ProtoBuf, Version=0.0.0.23, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FN.TagCache.Redis.ProtoBuf.0.0.0.25\lib\net45\TagCache.Redis.ProtoBuf.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -61,12 +67,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="TagCache.Redis.AutoProtobuf.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\TagCache.Redis\src\TagCache.Redis.ProtoBuf\TagCache.Redis.ProtoBuf.csproj">
-      <Project>{6ac97c84-c2d6-4479-890a-7c5d2a7aa6cf}</Project>
-      <Name>TagCache.Redis.ProtoBuf</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
