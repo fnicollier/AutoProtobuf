@@ -13,5 +13,9 @@
     <releaseNotes>Alpha release</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>protobuf</tags>
+    <dependencies>
+      <dependency id="AutoProtobuf" version="0.1.1-alpha" />
+      <dependency id="FN.TagCache.Redis.ProtoBuf" version="0.1.1.1-beta" />
+    </dependencies>
   </metadata>
 </package>

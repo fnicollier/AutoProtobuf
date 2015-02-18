@@ -8,4 +8,4 @@
 [assembly: AssemblyDescription("An adapter for the TagCache.Redis library's Protobuf serializer and Autoprotobuf.")]
 [assembly: AssemblyProduct("TagCache.Redis.AutoProtobuf")]
 [assembly: AssemblyCopyright("Copyright © 2015")]
-[assembly: AssemblyVersion("0.1.0.0")]
+[assembly: AssemblyVersion("0.1.0.1")]
