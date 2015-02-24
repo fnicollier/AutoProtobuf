@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +11,7 @@ namespace AutoProtobuf
     {
         private const BindingFlags Flags = BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
         private static readonly Dictionary<Type, HashSet<Type>> SubTypes = new Dictionary<Type, HashSet<Type>>();
+        private static readonly ConcurrentBag<Type> BuiltTypes = new ConcurrentBag<Type>();
         private static readonly Type ObjectType = typeof(object);
 
         /// <summary>
@@ -39,6 +41,11 @@ namespace AutoProtobuf
         /// <param name="type">The type of build the serializer for.</param>
         public static void Build(Type type)
         {
+            if (BuiltTypes.Contains(type))
+            {
+                return;
+            }
+
             lock (type)
             {
                 if (RuntimeTypeModel.Default.CanSerialize(type))
@@ -64,6 +71,8 @@ namespace AutoProtobuf
                 {
                     Build(memberType);
                 }
+
+                BuiltTypes.Add(type);
             }
         }
 
