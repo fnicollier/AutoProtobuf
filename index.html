@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="AutoProtobuf : A .NET library to automatically setup protobuf serializations on types without the need to use attributes">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>AutoProtobuf</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/fnicollier/AutoProtobuf">View on GitHub</a>
+
+          <h1 id="project_title">AutoProtobuf</h1>
+          <h2 id="project_tagline">A .NET library to automatically setup protobuf serializations on types without the need to use attributes</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/fnicollier/AutoProtobuf/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/fnicollier/AutoProtobuf/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>Simply call the following once in your process before serializing with ProtoBuf:</p>
+
+<div class="highlight highlight-c#"><pre>SerializerBuilder.Build(complexClass);</pre></div>
+
+<p>If the class already has a serializer generated, the call does nothing.</p>
+
+<h1>
+<a id="what-can-it-do" class="anchor" href="#what-can-it-do" aria-hidden="true"><span class="octicon octicon-link"></span></a>What can it do?</h1>
+
+<p>Generates serializers for any type protobuf-net can serialize. It does this by calling protobuf-net's RuntimeTypeModel and adding all fields to the serializaton model for each class. </p>
+
+<p>It will navigate an object's inheritance tree so that inherited fields are also serialized properly.</p>
+
+<h1>
+<a id="known-limitations" class="anchor" href="#known-limitations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Known limitations</h1>
+
+<p>Because ProtoBuf-net needs to have the inheritance tree defined all at once, the serializer builder will fail when called for an object that inherits from the same concrete base class as a previously built object. In such a case use ProtoBuf-net attributes.</p>
+
+<p>Doesn't works with DataTables, please use <a href="http://www.nuget.org/packages/protobuf-net-data">protobuf-net-data</a> for serializing those.</p>
+
+<p>This is also a very early release so use with caution.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">AutoProtobuf maintained by <a href="https://github.com/fnicollier">fnicollier</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
