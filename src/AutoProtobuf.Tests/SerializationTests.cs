@@ -97,13 +97,7 @@ namespace AutoProtobuf.Tests
         [TestMethod]
         public void Given_a_hiererchical_structure_should_serialize_and_deserialize_correctly()    
         {
-            var bobby = new Person { Name = "Bobby" };
-            var johnny = new Person { Name = "Johnny", Child = bobby };
-            bobby.Parent = johnny;
-            var marty = new Person { Name = "Marty", Parent = bobby };
-            bobby.Child = marty;
-
-            var people = new List<Person> { bobby, johnny, marty };
+            var people = CreateListOfPerson();
 
             var refTypes = new [] {typeof(Person)};
 
@@ -116,6 +110,30 @@ namespace AutoProtobuf.Tests
             {
                 Assert.AreEqual(people[i].Name, result[i].Name);          
             }
+        }
+
+        private List<Person> CreateListOfPerson()
+        {
+            var bobby = new Person { Name = "Bobby" };
+            var johnny = new Person { Name = "Johnny", Child = bobby };
+            bobby.Parent = johnny;
+            var marty = new Person { Name = "Marty", Parent = bobby };
+            bobby.Child = marty;
+
+            return new List<Person> { bobby, johnny, marty };
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ProtoBuf.ProtoException))]
+        public void Given_a_hiererchical_structure_without_ref_types_serialization_should_fail()
+        {
+            var people = CreateListOfPerson();
+
+            var refTypes = new[] { typeof(Person) };
+
+            SerializerBuilder.Build<List<Person>>();
+
+            Serializer.DeepClone(people);
         }
 
         public class Person
