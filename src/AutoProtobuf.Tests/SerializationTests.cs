@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProtoBuf;
 using ProtoBuf.Data;
+using Newtonsoft.Json;
+using ProtoBuf.Meta;
+using DeepEqual.Syntax;
 
 namespace AutoProtobuf.Tests
 {
@@ -88,6 +92,37 @@ namespace AutoProtobuf.Tests
                 Assert.AreEqual(dataTable.Rows[0]["A"], result.Rows[0]["A"]);
                 Assert.AreEqual(dataTable.Rows[0]["B"], result.Rows[0]["B"]);
             }
+        }
+
+        [TestMethod]
+        public void Given_a_hiererchical_structure_should_serialize_and_deserialize_correctly()    
+        {
+            var bobby = new Person { Name = "Bobby" };
+            var johnny = new Person { Name = "Johnny", Child = bobby };
+            bobby.Parent = johnny;
+            var marty = new Person { Name = "Marty", Parent = bobby };
+            bobby.Child = marty;
+
+            var people = new List<Person> { bobby, johnny, marty };
+
+            var refTypes = new [] {typeof(Person)};
+
+            SerializerBuilder.Build<List<Person>>(x => refTypes.Contains(x));
+
+            var result = Serializer.DeepClone(people);
+
+            Assert.AreEqual(people.Count, result.Count);
+            for (int i = 0; i < people.Count; i++)
+            {
+                Assert.AreEqual(people[i].Name, result[i].Name);          
+            }
+        }
+
+        public class Person
+        {
+            public Person Parent { get; set; }
+            public Person Child { get; set; }
+            public string Name { get; set; }
         }
     }
 }
