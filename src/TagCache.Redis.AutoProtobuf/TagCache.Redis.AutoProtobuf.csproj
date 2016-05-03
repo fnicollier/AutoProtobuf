@@ -33,12 +33,13 @@
     <Reference Include="protobuf-net">
       <HintPath>..\..\..\..\Symbiotics\Mercurial\symbiotics\src\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="protobuf-net-data">
-      <HintPath>..\..\..\..\Symbiotics\Mercurial\symbiotics\src\packages\protobuf-net-data.2.0.7.668\lib\net45\protobuf-net-data.dll</HintPath>
+    <Reference Include="protobuf-net-data, Version=2.0.7.668, Culture=neutral, PublicKeyToken=3a92fdc8f425ccde, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net-data.2.0.7.668\lib\net45\protobuf-net-data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="StackExchange.Redis.StrongName, Version=1.0.316.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Symbiotics\Mercurial\symbiotics\src\packages\StackExchange.Redis.StrongName.1.0.394\lib\net45\StackExchange.Redis.StrongName.dll</HintPath>
+    <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.0.394\lib\net45\StackExchange.Redis.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,13 +48,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TagCache.Redis, Version=0.1.1.4, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Symbiotics\Mercurial\symbiotics\src\packages\FN.TagCache.Redis.0.1.1.4-beta\lib\net45\TagCache.Redis.dll</HintPath>
+    <Reference Include="TagCache.Redis, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TagCache.Redis.1.0.0.2\lib\net45\TagCache.Redis.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="TagCache.Redis.ProtoBuf, Version=0.0.0.23, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FN.TagCache.Redis.ProtoBuf.0.0.0.25\lib\net45\TagCache.Redis.ProtoBuf.dll</HintPath>
+    <Reference Include="TagCache.Redis.ProtoBuf, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TagCache.Redis.ProtoBuf.1.0.0.2\lib\net45\TagCache.Redis.ProtoBuf.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
